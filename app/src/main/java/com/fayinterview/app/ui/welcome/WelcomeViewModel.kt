@@ -1,15 +1,52 @@
 package com.fayinterview.app.ui.welcome
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.fayinterview.app.data.FayRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WelcomeViewModel: ViewModel() {
+@HiltViewModel
+class WelcomeViewModel @Inject constructor(
+    private val fayRepository: FayRepository
+): ViewModel() {
 
-    //TODO: Add a UI State to keep track of if the Sign In button should be enabled
+    private val _uiState = MutableStateFlow(WelcomeUiState())
+    val uiState = _uiState.asStateFlow()
 
     fun signIn(
         username: String,
         password: String
     ) {
-        //TODO: Use Retrofit and OkHttp to make a call (also dagger hilt for injection)
+        viewModelScope.launch(Dispatchers.IO) {
+            _uiState.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+            val isSuccess = fayRepository.signIn(
+                username = username,
+                password = password
+            )
+            if (isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        navForward = true
+                    )
+                }
+            } else {
+                // TODO: Nice to have - error message for the user since it failed
+                _uiState.update {
+                    it.copy(
+                        isLoading = false
+                    )
+                }
+            }
+        }
     }
 }
