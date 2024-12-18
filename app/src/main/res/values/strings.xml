@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FayInterview</string>
+    <string name="welcome_title">Welcome to Fay</string>
+    <string name="username_prompt">Username</string>
+    <string name="password_prompt">Password</string>
+    <string name="sign_in">Sign In</string>
 </resources>
