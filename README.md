@@ -1,14 +1,12 @@
 ## Demo video
 
-Main demo of the app:
-
-<video src="https://github.com/ntheurer/FayInterview/blob/main/assets/Demo.mp4" controls="controls" style="max-width: 100%;"></video>
-
-Timeout errors are also handled gracefully:
-
-<video src="https://github.com/ntheurer/FayInterview/blob/main/assets/SocketTimeoutExceptionHandling.mp4" controls="controls" style="max-width: 100%;"></video>
+[Watch the demo](https://drive.google.com/file/d/16BHglKDaNSQjww9PGMlGHT3Fvla4rJsU/view?usp=sharing)
 
 ## Any comments/notes for context
+
+It seems like a lot of medical apps require users to sign in each time so I decided to go with that 
+approach. However, I did set up logic to store the token so it could be changed to instead check 
+the token on app launch to keep the user authenticated. It just depends on what behavior is wanted.
 
 Some of the nice-to-haves / extra polish added:
 
