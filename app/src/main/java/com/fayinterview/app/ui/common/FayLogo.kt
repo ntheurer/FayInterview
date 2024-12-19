@@ -1,4 +1,4 @@
-package com.fayinterview.app.ui
+package com.fayinterview.app.ui.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.fayinterview.app.ui.appointments.AppointmentsOverviewMain
+import com.fayinterview.app.ui.appointments.AppointmentsOverviewScreen
 import com.fayinterview.app.ui.welcome.WelcomeMain
 import com.fayinterview.app.ui.welcome.WelcomeScreen
 
@@ -19,6 +21,8 @@ fun Navigation() {
                 navController = navController
             )
         }
-        // TODO: Appointments Overview Screen
+        composable<AppointmentsOverviewScreen> {
+            AppointmentsOverviewMain()
+        }
     }
 }

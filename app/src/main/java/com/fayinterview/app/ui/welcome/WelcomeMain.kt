@@ -27,8 +27,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.fayinterview.app.ui.FayLogo
+import com.fayinterview.app.ui.common.FayLogo
 import com.fayinterview.app.R
+import com.fayinterview.app.ui.appointments.AppointmentsOverviewScreen
+import com.fayinterview.app.ui.common.FayButton
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -43,7 +45,7 @@ fun WelcomeMain(
 
     LaunchedEffect(uiState.navForward) {
         if (uiState.navForward) {
-            // TODO: Navigate to Appointments Overview
+            navController.navigate(AppointmentsOverviewScreen)
         }
     }
 
@@ -120,7 +122,7 @@ private fun SignInSection(
             modifier = Modifier
                 .fillMaxWidth()
         )
-        TextField(
+        TextField( // TODO: Nice to have - BasicSecureTextField instead
             value = password,
             onValueChange = {
                 password = it
@@ -137,27 +139,14 @@ private fun SignInSection(
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         )
-        Button(
+        FayButton(
+            textRes = R.string.sign_in,
+            isEnabled = !isLoading && username.isNotBlank() && password.isNotBlank(),
             onClick = {
                 if (username.isNotBlank() && password.isNotBlank()) {
                     onSignInClick(username, password)
                 }
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            ),
-            shape = RoundedCornerShape(8.dp),
-            enabled = !isLoading && username.isNotBlank() && password.isNotBlank(),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.sign_in),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        }
+            }
+        )
     }
 }

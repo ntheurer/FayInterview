@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">FayInterview</string>
+
     <string name="welcome_title">Welcome to Fay</string>
     <string name="username_prompt">Username</string>
     <string name="password_prompt">Password</string>
     <string name="sign_in">Sign In</string>
+
+    <string name="fay">Fay</string>
+    <string name="appointments_overview_title">Appointments</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="past">Past</string>
+    <string name="appointment_info_title">%s with %s</string>
+    <string name="appointment_time">%s - %s (%s)</string>
+    <string name="join_meeting">Join Zoom</string>
 </resources>
