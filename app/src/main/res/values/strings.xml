@@ -5,6 +5,7 @@
     <string name="username_prompt">Username</string>
     <string name="password_prompt">Password</string>
     <string name="sign_in">Sign In</string>
+    <string name="password_visibility">Password Visibility</string>
 
     <string name="fay">Fay</string>
     <string name="appointments_overview_title">Appointments</string>

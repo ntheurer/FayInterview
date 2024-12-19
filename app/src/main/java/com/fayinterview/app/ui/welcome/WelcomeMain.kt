@@ -7,10 +7,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -19,11 +25,17 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -99,11 +111,16 @@ private fun SignInSection(
     isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val focusManager = LocalFocusManager.current
+
     var username by rememberSaveable {
         mutableStateOf("")
     }
     var password by rememberSaveable {
         mutableStateOf("")
+    }
+    var showPassword by remember {
+        mutableStateOf(false)
     }
 
     Column(
@@ -123,10 +140,14 @@ private fun SignInSection(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             },
+            keyboardOptions = KeyboardOptions(
+                autoCorrectEnabled = false,
+                imeAction = ImeAction.Next
+            ),
             modifier = Modifier
                 .fillMaxWidth()
         )
-        TextField( // TODO: Nice to have - BasicSecureTextField instead
+        TextField( // Note: BasicSecureTextField could be used but then a label couldn't be used
             value = password,
             onValueChange = {
                 password = it
@@ -139,6 +160,37 @@ private fun SignInSection(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             },
+            keyboardOptions = KeyboardOptions(
+                autoCorrectEnabled = false,
+                keyboardType = KeyboardType.Password,
+                imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    // Dismiss keyboard
+                    focusManager.clearFocus()
+                }
+            ),
+            visualTransformation = if (showPassword) {
+                VisualTransformation.None
+            } else {
+                PasswordVisualTransformation()
+            },
+            trailingIcon = {
+                IconButton(
+                    onClick = { showPassword = !showPassword }
+                ) {
+                    Icon(
+                        if (showPassword) {
+                            Icons.Default.Visibility
+                        } else {
+                            Icons.Default.VisibilityOff
+                        },
+                        contentDescription = stringResource(R.string.password_visibility),
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            },
             modifier = Modifier
                 .padding(top = 16.dp)
                 .fillMaxWidth()
@@ -147,6 +199,7 @@ private fun SignInSection(
             textRes = R.string.sign_in,
             isEnabled = !isLoading && username.isNotBlank() && password.isNotBlank(),
             onClick = {
+                focusManager.clearFocus()
                 if (username.isNotBlank() && password.isNotBlank()) {
                     onSignInClick(username, password)
                 }

@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.security.crypto)
+    implementation(libs.androidx.material.icons.extended)
 
     ksp(libs.hilt.android.compiler)
 
