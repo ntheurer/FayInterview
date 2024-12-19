@@ -6,6 +6,8 @@
     <string name="password_prompt">Password</string>
     <string name="sign_in">Sign In</string>
     <string name="password_visibility">Password Visibility</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign Up</string>
 
     <string name="timeout_error_message">Request timed out. Please try again.</string>
     <string name="unauthorized_error_message">Incorrect username or password.</string>

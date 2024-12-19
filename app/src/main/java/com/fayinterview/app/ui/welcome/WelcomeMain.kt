@@ -1,6 +1,7 @@
 package com.fayinterview.app.ui.welcome
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -44,6 +46,7 @@ import com.fayinterview.app.ui.common.FayLogo
 import com.fayinterview.app.R
 import com.fayinterview.app.ui.appointments.AppointmentsOverviewScreen
 import com.fayinterview.app.ui.common.FayButton
+import com.fayinterview.app.ui.webview.WebViewScreen
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -94,6 +97,13 @@ fun WelcomeMain(
             }
             SignInSection(
                 onSignInClick = viewModel::signIn,
+                onSignUpClick = {
+                    navController.navigate(
+                        WebViewScreen(
+                            url = "https://www.faynutrition.com/log-in"
+                        )
+                    )
+                },
                 isLoading = uiState.isLoading,
                 errorMessage = uiState.errorMessage,
                 modifier = Modifier
@@ -109,6 +119,7 @@ fun WelcomeMain(
 @Composable
 private fun SignInSection(
     onSignInClick: (String, String) -> Unit,
+    onSignUpClick: () -> Unit,
     isLoading: Boolean,
     @StringRes errorMessage: Int?,
     modifier: Modifier = Modifier
@@ -219,5 +230,28 @@ private fun SignInSection(
                 }
             }
         )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.dont_have_account),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Text(
+                text = stringResource(R.string.sign_up),
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold
+                ),
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .clickable(onClick = onSignUpClick)
+                    .padding(4.dp)
+            )
+        }
     }
 }
