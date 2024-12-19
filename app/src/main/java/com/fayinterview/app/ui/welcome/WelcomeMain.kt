@@ -1,5 +1,6 @@
 package com.fayinterview.app.ui.welcome
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,10 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,6 +35,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -71,10 +71,10 @@ fun WelcomeMain(
             .fillMaxSize()
     ) {
         Column(
-            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
+                .padding(top = 48.dp)
         ) {
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -95,8 +95,9 @@ fun WelcomeMain(
             SignInSection(
                 onSignInClick = viewModel::signIn,
                 isLoading = uiState.isLoading,
+                errorMessage = uiState.errorMessage,
                 modifier = Modifier
-                    .padding(top = 32.dp)
+                    .padding(top = 48.dp)
             )
         }
         if (uiState.isLoading) {
@@ -109,6 +110,7 @@ fun WelcomeMain(
 private fun SignInSection(
     onSignInClick: (String, String) -> Unit,
     isLoading: Boolean,
+    @StringRes errorMessage: Int?,
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -195,6 +197,18 @@ private fun SignInSection(
                 .padding(top = 16.dp)
                 .fillMaxWidth()
         )
+        errorMessage?.let {
+            Text(
+                text = stringResource(errorMessage),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.error,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+            )
+        }
         FayButton(
             textRes = R.string.sign_in,
             isEnabled = !isLoading && username.isNotBlank() && password.isNotBlank(),

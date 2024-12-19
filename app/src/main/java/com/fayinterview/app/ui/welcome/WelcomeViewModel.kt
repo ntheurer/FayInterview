@@ -3,6 +3,7 @@ package com.fayinterview.app.ui.welcome
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fayinterview.app.data.FayRepository
+import com.fayinterview.app.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,25 +27,43 @@ class WelcomeViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.update {
                 it.copy(
-                    isLoading = true
+                    isLoading = true,
+                    errorMessage = null
                 )
             }
-            val isSuccess = fayRepository.signIn(
+            val errorCode = fayRepository.signIn(
                 username = username,
                 password = password
             )
-            if (isSuccess) {
-                _uiState.update {
-                    it.copy(
-                        navForward = true
-                    )
+            when (errorCode) {
+                null -> {
+                    // success
+                    _uiState.update {
+                        it.copy(
+                            navForward = true
+                        )
+                    }
                 }
-            } else {
-                // TODO: Nice to have - error message for the user since it failed
-                _uiState.update {
-                    it.copy(
-                        isLoading = false
-                    )
+                408 -> {
+                    // HTTP 408 Request Timeout
+                    // Tell the user to try again
+                    //todo
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = R.string.timeout_error_message
+                        )
+                    }
+                }
+                401 -> {
+                    // Bad username or password
+                    // Tell the user to try again
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = R.string.unauthorized_error_message
+                        )
+                    }
                 }
             }
         }

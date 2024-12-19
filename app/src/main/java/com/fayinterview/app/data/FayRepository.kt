@@ -17,7 +17,7 @@ class FayRepository @Inject constructor(
     suspend fun signIn(
         username: String,
         password: String
-    ): Boolean {
+    ): Int? {
         val result = fayService.signIn(
             request = SignInRequest(
                 username = username,
@@ -28,12 +28,12 @@ class FayRepository @Inject constructor(
             result.isSuccessful -> {
                 return result.body()?.let {
                     tokenManager.saveToken(it.token)
-                    true
-                } ?: false
+                    null // no error code
+                } ?: -1 // issue with the result body but the endpoint call has successful http code
             }
 
             else -> {
-                false
+                result.code()
             }
         }
     }

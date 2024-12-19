@@ -7,6 +7,9 @@
     <string name="sign_in">Sign In</string>
     <string name="password_visibility">Password Visibility</string>
 
+    <string name="timeout_error_message">Request timed out. Please try again.</string>
+    <string name="unauthorized_error_message">Incorrect username or password.</string>
+
     <string name="fay">Fay</string>
     <string name="appointments_overview_title">Appointments</string>
     <string name="upcoming">Upcoming</string>
