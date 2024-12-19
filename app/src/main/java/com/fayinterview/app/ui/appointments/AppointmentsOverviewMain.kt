@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,6 +50,7 @@ import androidx.navigation.NavOptions
 import com.fayinterview.app.R
 import com.fayinterview.app.ui.common.FayButton
 import com.fayinterview.app.ui.common.FayLogo
+import com.fayinterview.app.ui.webview.WebViewScreen
 import com.fayinterview.app.ui.welcome.WelcomeScreen
 import com.fayinterview.app.util.DatePattern
 import com.fayinterview.app.util.humanReadable
@@ -154,6 +156,15 @@ fun AppointmentsOverviewMain(
                     R.string.no_past_appointments_found
                 },
                 onRefresh = viewModel::refresh,
+                onJoinMeetingClick = { appointmentId ->
+                    // Navigate to the specific meeting zoom link or launch the zoom app but that
+                    // is out of scope for this project
+                    navController.navigate(
+                        WebViewScreen(
+                            url = "https://www.zoom.us"
+                        )
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -197,6 +208,7 @@ private fun AppointmentsList(
     appointments: List<AppointmentInfo>,
     @StringRes placeholderText: Int,
     onRefresh: () -> Unit,
+    onJoinMeetingClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -239,7 +251,11 @@ private fun AppointmentsList(
                     .padding(horizontal = defaultHorizontalPadding)
                     .border(
                         width = 1.dp,
-                        color = MaterialTheme.colorScheme.surfaceDim,
+                        color = if (isSystemInDarkTheme()) {
+                            MaterialTheme.colorScheme.surfaceBright
+                        } else {
+                            MaterialTheme.colorScheme.surfaceDim
+                        },
                         shape = RoundedCornerShape(16.dp)
                     )
                     .clip(RoundedCornerShape(16.dp))
@@ -304,7 +320,7 @@ private fun AppointmentsList(
                         textRes = R.string.join_meeting,
                         isEnabled = true,
                         onClick = {
-                            // Out of scope for this project
+                            onJoinMeetingClick(info.appointment.appointmentId)
                         },
                         leadingIcon = {
                             Icon(
