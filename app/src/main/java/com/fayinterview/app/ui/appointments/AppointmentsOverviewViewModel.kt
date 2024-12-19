@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fayinterview.app.data.FayRepository
-import com.fayinterview.app.util.isPast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,10 +36,10 @@ class AppointmentsOverviewViewModel @Inject constructor(
                     state.copy(
                         isLoading = false,
                         upcomingAppointments = appointments.filter {
-                            !it.appointment.end.isPast()
+                            !it.isPast
                         },
                         pastAppointments = appointments.filter {
-                            it.appointment.end.isPast()
+                            it.isPast
                         }
                     )
                 }
