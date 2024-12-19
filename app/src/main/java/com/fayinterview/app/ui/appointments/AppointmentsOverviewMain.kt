@@ -16,10 +16,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Repeat
+import androidx.compose.material.icons.outlined.Videocam
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
@@ -279,16 +282,12 @@ private fun AppointmentsList(
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // Note: Ideally use Icon() or Image() with a drawable res instead of
-                            // Box with circle border for the repeat icon
-                            Box(
+                            Icon(
+                                Icons.Outlined.Repeat,
+                                contentDescription = null, // not important for accessibility
+                                tint = MaterialTheme.colorScheme.onBackground,
                                 modifier = Modifier
                                     .size(14.dp)
-                                    .border(
-                                        width = 1.dp,
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        shape = CircleShape
-                                    )
                             )
                             Text(
                                 text = info.appointment.recurrenceType,
@@ -308,25 +307,12 @@ private fun AppointmentsList(
                             // Out of scope for this project
                         },
                         leadingIcon = {
-                            // Note: Ideally this would be an Icon() or Image() with a drawable res
-                            Box(
+                            Icon(
+                                Icons.Outlined.Videocam,
+                                contentDescription = null, // not important for accessibility
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer,
                                 modifier = Modifier
-                                    .align(Alignment.CenterVertically)
                                     .size(15.dp)
-                                    .border(
-                                        width = 1.dp,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        shape = RoundedCornerShape(4.dp)
-                                    )
-                            )
-                            Box(
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .size(5.dp)
-                                    .border(
-                                        width = 1.dp,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                                    )
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
