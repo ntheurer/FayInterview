@@ -13,4 +13,7 @@
     <string name="appointment_info_title">%s with %s</string>
     <string name="appointment_time">%s - %s (%s)</string>
     <string name="join_meeting">Join Zoom</string>
+    <string name="no_upcoming_appointments_found">No upcoming appointments found</string>
+    <string name="no_past_appointments_found">No past appointments found</string>
+    <string name="refresh">Refresh</string>
 </resources>

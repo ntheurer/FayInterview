@@ -1,5 +1,6 @@
 package com.fayinterview.app.ui.appointments
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -143,6 +145,12 @@ fun AppointmentsOverviewMain(
                 } else {
                     uiState.pastAppointments
                 },
+                placeholderText = if (selectedTabIndex == 0) {
+                    R.string.no_upcoming_appointments_found
+                } else {
+                    R.string.no_past_appointments_found
+                },
+                onRefresh = viewModel::refresh,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
@@ -184,6 +192,8 @@ private fun AppointmentsTab(
 @Composable
 private fun AppointmentsList(
     appointments: List<AppointmentInfo>,
+    @StringRes placeholderText: Int,
+    onRefresh: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -191,8 +201,26 @@ private fun AppointmentsList(
         modifier = modifier
     ) {
         if (appointments.isEmpty()) {
-            // TODO: Nice-to-have - Message if there are none
-            // TODO: Nice-to-have - Button to check again
+            item {
+                Text(
+                    text = stringResource(placeholderText),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth()
+                )
+            }
+            item {
+                FayButton(
+                    textRes = R.string.refresh,
+                    isEnabled = true,
+                    onClick = onRefresh,
+                    modifier = Modifier
+                        .padding(horizontal = defaultHorizontalPadding)
+                )
+            }
         }
         items(
             appointments,

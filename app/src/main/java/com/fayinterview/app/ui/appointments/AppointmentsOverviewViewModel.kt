@@ -22,6 +22,15 @@ class AppointmentsOverviewViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
+        refresh()
+    }
+
+    fun refresh() {
+        _uiState.update {
+            it.copy(
+                isLoading = true
+            )
+        }
         viewModelScope.launch(Dispatchers.IO) {
             fayRepository.fetchAppointments()?.let { appointments ->
                 _uiState.update { state ->

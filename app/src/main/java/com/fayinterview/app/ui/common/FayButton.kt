@@ -19,6 +19,7 @@ fun FayButton(
     @StringRes textRes: Int,
     isEnabled: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     leadingIcon: @Composable RowScope.() -> Unit = {}
 ) {
     Button(
@@ -29,7 +30,7 @@ fun FayButton(
         ),
         shape = RoundedCornerShape(8.dp),
         enabled = isEnabled,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(top = 16.dp)
     ) {
