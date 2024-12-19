@@ -114,6 +114,30 @@ class WelcomeViewModelTest {
         }
     }
 
+    @Test
+    fun testSignInOtherError() = runTest {
+        // GIVEN
+        val expected = WelcomeUiState(
+            isLoading = false,
+            navForward = false,
+            errorMessage = R.string.generic_error_message
+        )
+        signInReturnsFailure(errorCode = 123456789)
+
+        viewModel.uiState.test {
+            awaitItem() // initialization values can be ignored
+            // WHEN
+            viewModel.signIn("username", "password")
+            awaitItem() // setting loading values can be ignored
+
+            // THEN
+            val actual = awaitItem()
+            assert(actual.isLoading == expected.isLoading)
+            assert(actual.navForward == expected.navForward)
+            assert(actual.errorMessage == expected.errorMessage)
+        }
+    }
+
     private fun signInReturnsSuccess() {
         coEvery {
             fayRepository.signIn(any(), any())

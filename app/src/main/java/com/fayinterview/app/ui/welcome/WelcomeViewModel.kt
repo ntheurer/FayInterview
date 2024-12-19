@@ -47,7 +47,6 @@ class WelcomeViewModel @Inject constructor(
                 408 -> {
                     // HTTP 408 Request Timeout
                     // Tell the user to try again
-                    //todo
                     _uiState.update {
                         it.copy(
                             isLoading = false,
@@ -62,6 +61,15 @@ class WelcomeViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             errorMessage = R.string.unauthorized_error_message
+                        )
+                    }
+                }
+                else -> {
+                    // Tell the user to try again
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = R.string.generic_error_message
                         )
                     }
                 }

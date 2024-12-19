@@ -14,6 +14,10 @@ class FayRepository @Inject constructor(
     private val tokenManager: TokenManager
 ) {
 
+    /**
+     * Calls the endpoint to authenticate the user
+     * @return error code or null if no error
+     */
     suspend fun signIn(
         username: String,
         password: String
@@ -26,10 +30,16 @@ class FayRepository @Inject constructor(
         )
         return when {
             result.isSuccessful -> {
-                return result.body()?.let {
+                result.body()?.let {
                     tokenManager.saveToken(it.token)
-                    null // no error code
-                } ?: -1 // issue with the result body but the endpoint call has successful http code
+                }
+                return if (result.body() == null) {
+                    // issue with the result body but the endpoint call has successful http code
+                    -1
+                } else {
+                    // No error
+                    null
+                }
             }
 
             else -> {
