@@ -59,6 +59,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.security.crypto)
 
     ksp(libs.hilt.android.compiler)
 

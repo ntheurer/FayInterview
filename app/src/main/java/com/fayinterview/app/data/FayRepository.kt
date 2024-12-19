@@ -10,10 +10,9 @@ import javax.inject.Singleton
  */
 @Singleton
 class FayRepository @Inject constructor(
-    private val fayService: FayService
+    private val fayService: FayService,
+    private val tokenManager: TokenManager
 ) {
-
-    var authToken: String? = null //fixme
 
     suspend fun signIn(
         username: String,
@@ -27,9 +26,10 @@ class FayRepository @Inject constructor(
         )
         return when {
             result.isSuccessful -> {
-                authToken = result.body()?.token
-                // TODO save token for calls requiring authentication (e.g. Appointments Overview)
-                true
+                return result.body()?.let {
+                    tokenManager.saveToken(it.token)
+                    true
+                } ?: false
             }
 
             else -> {
@@ -39,7 +39,7 @@ class FayRepository @Inject constructor(
     }
 
     suspend fun fetchAppointments(): List<AppointmentInfo>? {
-        return authToken?.let { authToken ->
+        return tokenManager.getToken()?.let { authToken ->
             val result = fayService.fetchAppointments("Bearer $authToken")
             when {
                 result.isSuccessful -> {
