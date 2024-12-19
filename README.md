@@ -2,11 +2,11 @@
 
 Main demo of the app:
 
-<video src="assets/Demo.mp4" controls="controls" style="max-width: 100%;"></video>
+<video src="https://github.com/ntheurer/FayInterview/blob/main/assets/Demo.mp4" controls="controls" style="max-width: 100%;"></video>
 
 Timeout errors are also handled gracefully:
 
-<video src="assets/SocketTimeoutExceptionHandling.mp4" controls="controls" style="max-width: 100%;"></video>
+<video src="https://github.com/ntheurer/FayInterview/blob/main/assets/SocketTimeoutExceptionHandling.mp4" controls="controls" style="max-width: 100%;"></video>
 
 ## Any comments/notes for context
 
