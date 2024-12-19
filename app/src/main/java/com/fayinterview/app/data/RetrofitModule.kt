@@ -20,7 +20,7 @@ object RetrofitModule {
     fun provideRetrofit(
         baseUrl: String
     ): Retrofit {
-        val timeoutInterceptor = TimeoutInterceptor(retryAttempts = 3) // TODO: Nice to have - refine the handling of retries or timeout errors
+        val timeoutInterceptor = TimeoutInterceptor(retryAttempts = 1) // TODO: Nice to have - refine the handling of retries or timeout errors
 
         val client = OkHttpClient.Builder()
             .addInterceptor(timeoutInterceptor)

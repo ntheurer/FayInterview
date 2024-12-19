@@ -12,6 +12,9 @@ import javax.inject.Singleton
 class FayRepository @Inject constructor(
     private val fayService: FayService
 ) {
+
+    var authToken: String? = null //fixme
+
     suspend fun signIn(
         username: String,
         password: String
@@ -24,6 +27,7 @@ class FayRepository @Inject constructor(
         )
         return when {
             result.isSuccessful -> {
+                authToken = result.body()?.token
                 // TODO save token for calls requiring authentication (e.g. Appointments Overview)
                 true
             }
@@ -34,16 +38,25 @@ class FayRepository @Inject constructor(
         }
     }
 
-    suspend fun fetchAppointments(): List<AppointmentInfo> {
-        // TODO: Make endpoint call
-        val appointments = listOf<Appointment>()
-        return appointments.map {
-            // Note: if fetchProviderName is implemented and could have errors, there should be
-            // error checking added
-            AppointmentInfo(
-                it,
-                fetchProviderName(it.providerId)
-            )
+    suspend fun fetchAppointments(): List<AppointmentInfo>? {
+        return authToken?.let { authToken ->
+            val result = fayService.fetchAppointments("Bearer $authToken")
+            when {
+                result.isSuccessful -> {
+                    result.body()?.appointments?.map {
+                        // Note: if fetchProviderName is implemented and could have errors, there should
+                        // be error checking added for that too
+                        AppointmentInfo(
+                            it,
+                            fetchProviderName(it.providerId)
+                        )
+                    }
+                }
+
+                else -> {
+                    null
+                }
+            }
         }
     }
 

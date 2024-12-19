@@ -18,3 +18,7 @@ enum class DatePattern(val value: String) {
 fun Date.humanReadable(pattern: DatePattern): String {
     return SimpleDateFormat(pattern.value, Locale.getDefault()).format(this)
 }
+
+fun Date.isPast(): Boolean {
+    return this.before(Date())
+}

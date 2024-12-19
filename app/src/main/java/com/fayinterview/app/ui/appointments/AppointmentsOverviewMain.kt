@@ -24,6 +24,7 @@ import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -38,9 +39,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import com.fayinterview.app.R
 import com.fayinterview.app.ui.common.FayButton
 import com.fayinterview.app.ui.common.FayLogo
+import com.fayinterview.app.ui.welcome.WelcomeScreen
 import com.fayinterview.app.util.DatePattern
 import com.fayinterview.app.util.humanReadable
 import kotlinx.serialization.Serializable
@@ -54,9 +58,19 @@ object AppointmentsOverviewScreen
 
 @Composable
 fun AppointmentsOverviewMain(
+    navController: NavController,
     viewModel: AppointmentsOverviewViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.logOut) {
+        if (uiState.logOut) {
+            navController.navigate(
+                WelcomeScreen,
+                navOptions = NavOptions.Builder().setPopUpTo(WelcomeScreen, true).build()
+            )
+        }
+    }
 
     val tabs = listOf(
         stringResource(R.string.upcoming),
@@ -176,6 +190,10 @@ private fun AppointmentsList(
         state = rememberLazyListState(),
         modifier = modifier
     ) {
+        if (appointments.isEmpty()) {
+            // TODO: Nice-to-have - Message if there are none
+            // TODO: Nice-to-have - Button to check again
+        }
         items(
             appointments,
             key = { it.appointment.appointmentId }

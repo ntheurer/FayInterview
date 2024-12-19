@@ -22,7 +22,9 @@ fun Navigation() {
             )
         }
         composable<AppointmentsOverviewScreen> {
-            AppointmentsOverviewMain()
+            AppointmentsOverviewMain(
+                navController = navController
+            )
         }
     }
 }

@@ -2,6 +2,8 @@ package com.fayinterview.app.data
 
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 /**
@@ -11,4 +13,9 @@ import retrofit2.http.POST
 interface FayService {
     @POST("/signin")
     suspend fun signIn(@Body request: SignInRequest): Response<SignInResponse>
+
+    @GET("/appointments")
+    suspend fun fetchAppointments(
+        @Header("Authorization") auth: String
+    ): Response<AppointmentsResponse>
 }

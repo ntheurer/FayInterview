@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import com.fayinterview.app.ui.common.FayLogo
 import com.fayinterview.app.R
 import com.fayinterview.app.ui.appointments.AppointmentsOverviewScreen
@@ -45,7 +46,10 @@ fun WelcomeMain(
 
     LaunchedEffect(uiState.navForward) {
         if (uiState.navForward) {
-            navController.navigate(AppointmentsOverviewScreen)
+            navController.navigate(
+                AppointmentsOverviewScreen,
+                navOptions = NavOptions.Builder().setPopUpTo(WelcomeScreen, true).build()
+            )
         }
     }
 
